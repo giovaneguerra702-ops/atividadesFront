@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digimon — O Mundo Digital</title>
+<style>
+  /* Fonte do design (Figma): Pixel Digivolve. Coloque o arquivo em assets/. */
+  @font-face {
+    font-family: "Pixel Digivolve";
+    src: local("Pixel Digivolve"),
+         url("assets/PixelDigivolve.woff2") format("woff2"),
+         url("assets/PixelDigivolve.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+ 
+  :root {
+    /* Cores */
+    --color-black: #000000;
+    --color-surface: #040810;
+    --color-orange: #f5a623;
+    --color-blue: #4ba3e3;
+    --color-green: #00ff41;
+    --color-line: #1e6bb8;
+    --color-line-muted: #1e4a6e;
+    --color-gold: #fcc830;
+    --color-gold-text: #f9b72b;
+ 
+    /* Tipografia */
+    --font-pixel: "Pixel Digivolve", "Courier New", monospace;
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fs-micro: 11px;
+    --fs-caption: 12px;
+    --fs-button: 14px;
+    --fs-body-sm: 15px;
+    --fs-body: 16px;
+    --fs-lead: 17px;
+    --fs-step-title: 22px;
+    --fs-name: 27px;
+    --fs-card-title: 28px;
+    --fs-brand: 30px;
+    --fs-step-number: 32px;
+    --fs-heading: 56px;
+    --fs-display: 76px;
+    --lh-tight: 1.1;
+    --lh-display: 1.08;
+    --lh-body: 1.6;
+ 
+    /* Espaçamentos */
+    --space-8: 8px;
+    --space-10: 10px;
+    --space-12: 12px;
+    --space-14: 14px;
+    --space-18: 18px;
+    --space-20: 20px;
+    --space-24: 24px;
+    --space-26: 26px;
+    --space-28: 28px;
+    --space-48: 48px;
+    --gutter: 80px;
+ 
+    /* Raios */
+    --radius-sm: 4px;
+    --radius-photo: 31px;
+    --radius-cover: 30px;
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; }
+ 
+  html { -webkit-text-size-adjust: 100%; }
+ 
+  body {
+    margin: 0;
+    background: var(--color-black);
+    font-family: var(--font-pixel);
+    color: var(--color-blue);
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  img { display: block; max-width: none; }
+  h1, h2, h3, p, ul, figure { margin: 0; padding: 0; }
+  ul { list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; }
+ 
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+ 
+  /* ---------- Página ---------- */
+  .page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: var(--color-black);
+  }
+  .page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("./assets/fundo.png") center top / 1365px 768px repeat;
+    opacity: 90%;
+    pointer-events: none;
+  }
+  .page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-black);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .page > * { position: relative; z-index: 1; }
+ 
+  /* ---------- Identificação de seção ---------- */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-size: var(--fs-caption);
+    white-space: nowrap;
+  }
+  .section-label__number { color: var(--color-green); }
+  .section-label__divider { width: 24px; height: 1px; background: var(--color-green); }
+  .section-label__title { color: var(--color-blue); text-transform: uppercase; }
+  .section-label--sans { font-family: var(--font-sans); }
+  .section-label--sans .section-label__number { font-weight: 400; }
+  .section-label--sans .section-label__title { font-weight: 500; }
+ 
+  /* ---------- Botão ---------- */
+  .button {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-12);
+    padding: var(--space-14) var(--space-20);
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-gold-text);
+    font-family: var(--font-pixel);
+    font-size: var(--fs-button);
+    line-height: normal;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .button__icon { width: var(--space-18); height: var(--space-18); }
+ 
+  /* ---------- Apresentação (header) ---------- */
+  .header {
+    height: 562px;
+    overflow: hidden;
+  }
+ 
+  .nav {
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    height: 112px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .nav__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+  .nav__brand-icon { width: 32px; height: 32px; }
+  .nav__brand-name { color: var(--color-orange); font-size: var(--fs-brand); line-height: normal; }
+  .nav__brand-mark { color: var(--color-blue); font-size: var(--fs-caption); line-height: normal; }
+  .nav__toggle { display: none; }
+  .nav__menu { display: flex; align-items: center; }
+  .nav__list { display: flex; align-items: center; }
+ 
+  .header__content {
+    position: relative;
+    height: 414px;
+    margin: 112px 127px 0 var(--gutter);
+    overflow: hidden;
+  }
+  .header__logo {
+    position: absolute;
+    top: 42px;
+    left: 275px;
+    right: 275px;
+    aspect-ratio: 1286 / 621;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .header__logo-img {
+    position: absolute;
+    left: -0.01%;
+    top: -0.07%;
+    width: 100.06%;
+    height: 100%;
+  }
+  .header__sprite {
+    position: absolute;
+    top: 246px;
+    left: 0;
+    width: 175px;
+    height: 175px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .header__sprite-img {
+    position: absolute;
+    left: 0.08%;
+    top: 0.05%;
+    width: 100%;
+    height: 100%;
+  }
+ 
+  /* ---------- Benefícios (O mundo digital) ---------- */
+  .world {
+    position: relative;
+    height: 880px;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px var(--color-black);
+  }
+  .world__label { position: absolute; top: 95px; left: 79px; }
+  .world__intro {
+    position: absolute;
+    top: 157px;
+    left: 79px;
+    width: 1280px;
+    height: 332px;
+  }
+  .world__title {
+    position: absolute;
+    top: 113px;
+    right: 623px;
+    width: 624px;
+    height: 124px;
+    color: var(--color-orange);
+    font-size: var(--fs-heading);
+    font-weight: 400;
+    line-height: var(--lh-tight);
+    text-align: right;
+  }
+  .world__title span { display: block; }
+  .world__photo {
+    position: absolute;
+    top: 0;
+    left: 841px;
+    width: 439px;
+    height: 332px;
+    border-radius: var(--radius-photo);
+    overflow: hidden;
+  }
+  .world__photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-photo);
+  }
+  .world__badge {
+    position: absolute;
+    top: 17px;
+    left: 1255px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+  .world__benefits {
+    position: absolute;
+    top: 537px;
+    left: 79px;
+    right: 79px;
+    height: 153px;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-48);
+    overflow: hidden;
+  }
+  .benefit {
+    flex: 1 0 0;
+    min-width: 1px;
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-28);
+    border-top: 1px solid var(--color-line);
+    overflow: hidden;
+  }
+  .benefit__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14);
+    width: 100%;
+    word-break: break-word;
+  }
+  .benefit__title {
+    color: var(--color-orange);
+    font-size: var(--fs-card-title);
+    font-weight: 400;
+    line-height: normal;
+  }
+  .benefit__text {
+    color: var(--color-blue);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+ 
+  /* ---------- Como funciona (A digievolução) ---------- */
+  .evolution {
+    position: relative;
+    height: 788px;
+    background: var(--color-surface);
+    opacity: 0.82;
+    overflow: hidden;
+  }
+  .evolution__label { position: absolute; top: 96px; left: var(--gutter); }
+  .evolution__process {
+    position: absolute;
+    top: 158px;
+    left: var(--gutter);
+    right: var(--gutter);
+    height: 534px;
+    display: flex;
+    align-items: flex-start;
+    gap: 112px;
+    overflow: hidden;
+  }
+  .evolution__overview {
+    flex: none;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    word-break: break-word;
+  }
+  .evolution__title {
+    color: var(--color-orange);
+    font-size: var(--fs-heading);
+    font-weight: 400;
+    line-height: var(--lh-tight);
+  }
+  .evolution__title span { display: block; }
+  .evolution__text {
+    color: var(--color-blue);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+  .evolution__video {
+    width: 362px;
+    max-width: 100%;
+    aspect-ratio: 362 / 222;
+    padding: 6px;
+    background: #d9d9d9;
+    border-radius: 8px;
+  }
+  .evolution__video-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #0d1624;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .evolution__video-player {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .evolution__video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 114px;
+    padding: 0;
+    border: 0;
+    transform: translate(-50%, -50%);
+    background: #5b3fd0;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .evolution__video-play:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+  }
+  .evolution__video-screen.is-playing .evolution__video-play {
+    display: none;
+  }
+  .evolution__video-play::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-35%, -50%);
+    border-style: solid;
+    border-width: 20px 0 20px 34px;
+    border-color: transparent transparent transparent #ffffff;
+  }
+  .evolution__video-error {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 12px;
+  }
+  .evolution__steps {
+    flex: 1 0 0;
+    min-width: 1px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-24);
+    padding: var(--space-26) 0;
+    border-top: 1px solid var(--color-line-muted);
+    word-break: break-word;
+    overflow: hidden;
+  }
+  .step__number {
+    flex: none;
+    width: 40px;
+    color: var(--color-green);
+    font-size: var(--fs-step-number);
+    line-height: normal;
+    overflow-wrap: anywhere;
+  }
+  .step__content {
+    flex: 1 0 0;
+    min-width: 1px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+  .step__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  .step__title { color: var(--color-orange); font-size: var(--fs-step-title); font-weight: 400; }
+  .step__tag { color: var(--color-green); font-size: var(--fs-micro); }
+  .step__text {
+    width: 100%;
+    color: var(--color-blue);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+  }
+  .evolution__note {
+    width: 100%;
+    height: 43px;
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--color-line-muted);
+  }
+  .evolution__badge {
+    position: absolute;
+    top: 0;
+    left: 1203px;
+    width: 157px;
+    height: 136px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .evolution__badge-img {
+    position: absolute;
+    left: -25.25%;
+    top: -11.17%;
+    width: 139.88%;
+    height: 141.34%;
+  }
+ 
+  /* ---------- Depoimentos (Os Digimon) ---------- */
+  .digimon {
+    position: relative;
+    height: 990px;
+    background: rgba(8, 12, 20, 0);
+    overflow: hidden;
+  }
+  .digimon__label { position: absolute; top: 96px; left: var(--gutter); }
+  .digimon__intro {
+    position: absolute;
+    top: 150px;
+    left: var(--gutter);
+    width: 623px;
+  }
+  .digimon__title {
+    width: 700px;
+    color: var(--color-orange);
+    font-size: var(--fs-heading);
+    font-weight: 400;
+    line-height: var(--lh-tight);
+    word-break: break-word;
+  }
+  .digimon__title span { display: block; white-space: nowrap; }
+ 
+  .digimon__gallery { display: contents; }
+  .digimon__card { display: contents; }
+  .digimon__media {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--w);
+    height: var(--h);
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .digimon__img {
+    position: absolute;
+    left: var(--il, 0);
+    top: var(--it, 0);
+    width: var(--iw, 100%);
+    height: var(--ih, 100%);
+    object-fit: var(--fit, cover);
+  }
+  .digimon__caption {
+    position: absolute;
+    left: var(--cx);
+    top: var(--cy);
+    width: var(--cw);
+    color: var(--color-orange);
+    font-size: var(--fs-name);
+    line-height: var(--lh-body);
+    word-break: break-word;
+  }
+ 
+  .digimon__card--shoutmon {
+    --x: 237px; --y: 308px; --w: 230px; --h: 222px; --ar: 230 / 222;
+    --il: 0.19%; --it: 0.08%; --iw: 100%; --ih: 100.1%; --fit: fill;
+    --cx: 280px; --cy: 530px; --cw: 163px;
+  }
+  .digimon__card--birdramon {
+    --x: 474px; --y: 311px; --w: 237px; --h: 219px; --ar: 237 / 219;
+    --il: -40.68%; --it: -72.02%; --iw: 170.45%; --ih: 184.19%; --fit: fill;
+    --cx: 511px; --cy: 530px; --cw: 163px;
+  }
+  .digimon__card--greymon {
+    --x: 718px; --y: 345px; --w: 246.667px; --h: 185px; --ar: 246.667 / 185;
+    --cx: 780px; --cy: 530px; --cw: 163px;
+  }
+  .digimon__card--gabumon {
+    --x: 987px; --y: 352px; --w: 230px; --h: 171px; --ar: 230 / 171;
+    --il: 0; --it: -19.32%; --iw: 100%; --ih: 152.42%; --fit: fill;
+    --cx: 1040px; --cy: 530px; --cw: 163px;
+  }
+  .digimon__card--shoutmon-x3 {
+    --x: 271px; --y: 698px; --w: 161px; --h: 230px; --ar: 161 / 230;
+    --fit: contain;
+    --cx: 252px; --cy: 928px; --cw: 200px;
+  }
+  .digimon__card--garudamon {
+    --x: 488px; --y: 698px; --w: 230px; --h: 230px; --ar: 1 / 1;
+    --cx: 515px; --cy: 928px; --cw: 188px;
+  }
+  .digimon__card--wargreymon {
+    --x: 747px; --y: 706px; --w: 230px; --h: 213px; --ar: 230 / 213;
+    --cx: 766px; --cy: 928px; --cw: 199px;
+  }
+  .digimon__card--garurumon {
+    --x: 990px; --y: 709px; --w: 264px; --h: 208px; --ar: 264 / 208;
+    --cx: 1034px; --cy: 928px; --cw: 197px;
+  }
+ 
+  .digimon__arrow {
+    position: absolute;
+    left: var(--ax);
+    top: var(--ay);
+    width: 12px;
+    height: 80px;
+    pointer-events: none;
+  }
+  .digimon__arrow::before,
+  .digimon__arrow::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .digimon__arrow::before {
+    top: 0;
+    width: 2px;
+    height: calc(100% - 7px);
+    background: var(--color-green);
+    box-shadow: 0 0 8px var(--color-green);
+  }
+  .digimon__arrow::after {
+    bottom: 0;
+    border: 4px solid transparent;
+    border-top-color: var(--color-green);
+  }
+  .digimon__arrow-rotator {
+    display: none;
+  }
+  .digimon__arrow--shoutmon { --ax: 354.83px; --ay: 583px; }
+  .digimon__arrow--birdramon { --ax: 589px; --ay: 582px; }
+  .digimon__arrow--greymon { --ax: 838px; --ay: 584px; }
+  .digimon__arrow--gabumon { --ax: 1102px; --ay: 583px; }
+ 
+  /* ---------- Chamada final e rodapé ---------- */
+  .cta {
+    width: 100%;
+    max-width: 1440px;
+    height: 636px;
+    background: var(--color-surface);
+    opacity: 0.82;
+    overflow: hidden;
+  }
+  .cta__label { position: absolute; top: 80px; left: var(--gutter); }
+  .cta__invite {
+    position: absolute;
+    top: 159px;
+    left: var(--gutter);
+    right: var(--gutter);
+    height: 445px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .cta__message {
+    flex: none;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+  .cta__title {
+    color: var(--color-orange);
+    font-family: var(--font-pixel);
+    font-size: var(--fs-display);
+    font-weight: 400;
+    line-height: var(--lh-display);
+    word-break: break-word;
+  }
+  .cta__title span { display: block; }
+  .cta__title-accent { color: var(--color-green); }
+  .cta__text {
+    width: 510px;
+    max-width: 100%;
+    color: var(--color-blue);
+    font-family: var(--font-sans);
+    font-size: var(--fs-lead);
+    font-weight: 400;
+    line-height: var(--lh-body);
+  }
+  .cta__action { width: 179px; height: 15px; }
+  .cta__cover {
+    position: absolute;
+    top: 128px;
+    left: 648px;
+    width: 694px;
+    height: 390px;
+    border-radius: var(--radius-cover);
+    overflow: hidden;
+  }
+  .cta__cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-cover);
+  }
+ 
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1359px) {
+    :root {
+      --gutter: 40px;
+      --fs-heading: 44px;
+      --fs-display: 56px;
+      --fs-name: 22px;
+      --fs-card-title: 24px;
+    }
+
+    .page {
+      max-width: none;
+      margin: 0;
+    }
+
+    /* Navbar: hambúrguer */
+    .header { height: auto; }
+    .nav {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 112px auto;
+      margin: 0 var(--gutter);
+      height: auto;
+    }
+    .nav__toggle {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid var(--color-gold);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      cursor: pointer;
+    }
+    .nav__toggle-bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--color-gold-text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(2) { opacity: 0; }
+    .nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav__toggle:focus-visible,
+    .button:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 3px; }
+ 
+    .nav__menu {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 0.35s ease, opacity 0.35s ease, visibility 0s linear 0.35s;
+    }
+    .nav__menu.is-open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+    .nav__list {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .nav__menu.is-open .nav__list { padding-bottom: var(--space-24); }
+ 
+    .header__content {
+      height: auto;
+      margin: 0 var(--gutter);
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-24);
+      overflow: visible;
+    }
+    .header__logo {
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+      width: 100%;
+      max-width: 683px;
+    }
+    .header__sprite { position: relative; top: auto; align-self: flex-start; }
+ 
+    .world {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 64px var(--gutter);
+    }
+    .world__label { position: static; }
+    .world__intro {
+      position: static;
+      width: auto;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .world__title { position: static; width: auto; height: auto; text-align: left; }
+    .world__photo { position: relative; top: auto; left: auto; width: 100%; max-width: 439px; height: auto; aspect-ratio: 439 / 332; }
+    .world__badge { top: 17px; left: auto; right: var(--gutter); width: 96px; height: 96px; }
+    .world__benefits {
+      position: static;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      height: auto;
+      gap: var(--space-24);
+      overflow: visible;
+    }
+    .benefit { overflow: visible; }
+ 
+    .evolution {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 64px var(--gutter);
+    }
+    .evolution__label { position: static; }
+    .evolution__process {
+      position: static;
+      height: auto;
+      align-items: flex-start;
+      gap: 32px;
+      overflow: visible;
+    }
+    .evolution__overview {
+      flex: 0 1 40%;
+      width: 40%;
+    }
+    .evolution__title { font-size: clamp(32px, 4vw, var(--fs-heading)); }
+    .evolution__video { width: 100%; }
+    .evolution__steps { flex: 1 1 0; }
+    .step { gap: var(--space-12); padding: var(--space-18) 0; }
+    .step__number { width: 32px; font-size: 26px; }
+    .step__header { white-space: normal; gap: var(--space-8); }
+    .step__title { font-size: 18px; }
+    .step__tag { flex: none; }
+    .evolution__badge { left: auto; right: var(--gutter); width: 118px; height: 102px; }
+ 
+    .digimon {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 64px var(--gutter);
+    }
+    .digimon__label { position: static; }
+    .digimon__intro { position: static; width: auto; }
+    .digimon__title { width: auto; }
+    .digimon__gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px 16px;
+    }
+    .digimon__card { display: flex; flex-direction: column; gap: var(--space-12); }
+    .digimon__media {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 100%;
+      height: auto;
+      aspect-ratio: var(--ar);
+    }
+    .digimon__caption { position: static; width: auto; font-size: 18px; }
+    .digimon__card--shoutmon-x3 .digimon__media { aspect-ratio: 1; }
+    .digimon__card--shoutmon-x3 .digimon__img { object-fit: contain; }
+    .digimon__arrow { display: none; }
+ 
+    .cta {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 64px var(--gutter);
+    }
+    .cta__label { position: static; }
+    .cta__invite {
+      position: static;
+      height: auto;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 40px;
+      overflow: visible;
+    }
+    .cta__message { width: 100%; }
+    .cta__cover {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 694 / 390;
+    }
+  }
+ 
+  /* ---------- Mobile ---------- */
+  @media (max-width: 768px) {
+    :root {
+      --gutter: 20px;
+      --fs-heading: 32px;
+      --fs-display: 40px;
+      --fs-name: 18px;
+      --fs-card-title: 22px;
+      --fs-step-number: 24px;
+      --fs-step-title: 18px;
+    }
+ 
+    .nav__brand-name { font-size: 24px; }
+    .header__content { padding: 24px 0 32px; }
+ 
+    .world, .evolution, .digimon, .cta { padding: 48px var(--gutter); }
+    .world__badge { width: 64px; height: 64px; }
+    .world__benefits { grid-template-columns: 1fr; gap: 32px; }
+
+    .evolution__process { flex-direction: column; align-items: stretch; gap: 32px; }
+    .evolution__overview { flex: none; width: 100%; }
+    .evolution__badge { width: 79px; height: 68px; }
+    .step { gap: var(--space-12); }
+    .step__header { flex-direction: column; align-items: flex-start; gap: 4px; white-space: normal; }
+ 
+    .digimon__gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
+ 
+    .cta__title span { display: inline; }
+    .cta__text { width: 100%; }
+  }
+ 
+  @media (prefers-reduced-motion: reduce) {
+    .nav__menu, .nav__toggle-bar { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+ 
+  <header class="header">
+    <h1 class="visually-hidden">Digimon</h1>
+    <nav class="nav" aria-label="Navegação principal">
+      <a class="nav__brand" href="#" aria-label="Digimon — início">
+        <img class="nav__brand-icon" src="./assets/asteric.png" alt="" width="32" height="32">
+        <span class="nav__brand-name">DIGIMON</span>
+        <span class="nav__brand-mark" aria-hidden="true">®</span>
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li>
+            <a class="button" href="#o-mundo-digital">
+              <span>Explorar o mundo</span>
+              <img class="button__icon" src="./assets/setinha.png" alt="" width="18" height="18">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+ 
+    <div class="header__content">
+      <div class="header__logo">
+        <img class="header__logo-img" src="./images/logo.png" alt="Logotipo Digimon Digital Monsters">
+      </div>
+      <div class="header__sprite">
+        <img class="header__sprite-img" src="./images/digivice.png" alt="Digivice em estilo pixel art">
+      </div>
+    </div>
+  </header>
+ 
+  <main>
+    <section class="world" id="o-mundo-digital" aria-labelledby="world-title">
+      <p class="section-label world__label">
+        <span class="section-label__number">02</span>
+        <span class="section-label__divider" aria-hidden="true"></span>
+        <span class="section-label__title">O mundo digital</span>
+      </p>
+ 
+      <div class="world__intro">
+        <h2 class="world__title" id="world-title">
+          <span>Um universo digital</span>
+          <span>conectado à rede.</span>
+        </h2>
+        <div class="world__photo">
+          <img class="world__photo-img" src="./images/mundo.png" alt="Paisagem do Mundo Digital com estruturas futuristas sob um céu de dados">
+        </div>
+      </div>
+ 
+      <ul class="world__benefits">
+        <li class="benefit">
+          <div class="benefit__content">
+            <h3 class="benefit__title">Ambientes digitais</h3>
+            <p class="benefit__text">Regiões como File Island e Net Ocean mostram que o Mundo Digital pode ter oceanos, ilhas e continentes próprios.</p>
+          </div>
+        </li>
+        <li class="benefit">
+          <div class="benefit__content">
+            <h3 class="benefit__title">Vida digital</h3>
+            <p class="benefit__text">O Mundo Digital é habitado por Digimon e outras formas de vida digital, com dinâmicas que variam entre histórias.</p>
+          </div>
+        </li>
+        <li class="benefit">
+          <div class="benefit__content">
+            <h3 class="benefit__title">Conexão com a rede</h3>
+            <p class="benefit__text">O Mundo Digital está conectado à rede, o que influencia a existência dos Digimon e a dinâmica do universo.</p>
+          </div>
+        </li>
+      </ul>
+ 
+      <img class="world__badge" src="./images/agumon.png" alt="Sprite pixelado amarelo de um Digimon">
+    </section>
+ 
+    <section class="evolution" aria-labelledby="evolution-title">
+      <p class="section-label evolution__label">
+        <span class="section-label__number">03</span>
+        <span class="section-label__divider" aria-hidden="true"></span>
+        <span class="section-label__title">A digievolução</span>
+      </p>
+ 
+      <div class="evolution__process">
+        <div class="evolution__overview">
+          <h2 class="evolution__title" id="evolution-title">
+            <span>Novas formas.</span>
+            <span>Novos caminhos.</span>
+          </h2>
+          <p class="evolution__text">A digievolução reorganiza os dados do corpo de um Digimon, geralmente produzindo uma forma mais poderosa.</p>
+          <figure class="evolution__video" aria-label="Vídeo sobre digievolução">
+            <div class="evolution__video-screen">
+              <video class="evolution__video-player" controls playsinline preload="metadata" aria-label="Vídeo sobre digievolução">
+                <source src="./video/digievolu%C3%A7ao.mp4" type="video/mp4">
+                Seu navegador não consegue reproduzir este vídeo.
+              </video>
+              <button class="evolution__video-play" type="button" aria-label="Reproduzir vídeo"></button>
+              <p class="evolution__video-error" role="status" hidden>Não foi possível carregar o vídeo. Confira o arquivo em atividade4/video.</p>
+            </div>
+          </figure>
+        </div>
+ 
+        <div class="evolution__steps">
+          <article class="step">
+            <p class="step__number">0 1</p>
+            <div class="step__content">
+              <div class="step__header">
+                <h3 class="step__title">Dados e cuidados</h3>
+                <p class="step__tag">CRESCIMENTO</p>
+              </div>
+              <p class="step__text">Dados, ambiente, cuidados e treinamento influenciam a evolução. Um mesmo Digimon pode seguir diferentes caminhos.</p>
+            </div>
+          </article>
+          <article class="step">
+            <p class="step__number">02</p>
+            <div class="step__content">
+              <div class="step__header">
+                <h3 class="step__title">Digievoluir</h3>
+                <p class="step__tag">CAMINHOS</p>
+              </div>
+              <p class="step__text">Digimons possuem uma linha evolutiva muito grande, mesmo que alguém tenha um mesmo digimon, provavelmente o resultado final vai ser diferente</p>
+            </div>
+          </article>
+          <article class="step">
+            <p class="step__number">03</p>
+            <div class="step__content">
+              <div class="step__header">
+                <h3 class="step__title">Vínculos e métodos</h3>
+                <p class="step__tag">POSSIBILIDADES</p>
+              </div>
+              <p class="step__text">Em muitas histórias, o vínculo com humanos e o Digivice permitem evoluções temporárias, fusões e até retornar da divievolução</p>
+            </div>
+          </article>
+          <div class="evolution__note" aria-hidden="true"></div>
+        </div>
+      </div>
+ 
+      <div class="evolution__badge">
+        <img class="evolution__badge-img" src="./images/koromon.png" alt="Sprite pixelado rosa de um Digimon">
+      </div>
+    </section>
+ 
+    <section class="digimon" aria-labelledby="digimon-title">
+      <p class="section-label digimon__label">
+        <span class="section-label__number">04</span>
+        <span class="section-label__divider" aria-hidden="true"></span>
+        <span class="section-label__title">Os Digimon</span>
+      </p>
+ 
+      <div class="digimon__intro">
+        <h2 class="digimon__title" id="digimon-title">
+          <span>Seres digitais</span>
+          <span>com muitas formas.</span>
+        </h2>
+      </div>
+ 
+      <div class="digimon__gallery">
+        <figure class="digimon__card digimon__card--shoutmon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/shoutmon.png" alt="Sprite pixelado do Shoutmon"></div>
+          <figcaption class="digimon__caption">Shoutmon</figcaption>
+        </figure>
+        <figure class="digimon__card digimon__card--birdramon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/birdramon.png" alt="Sprite pixelado do Birdramon"></div>
+          <figcaption class="digimon__caption">Birdramon</figcaption>
+        </figure>
+        <figure class="digimon__card digimon__card--greymon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/greymon.png" alt="Sprite pixelado do GReymon"></div>
+          <figcaption class="digimon__caption">GReymon</figcaption>
+        </figure>
+        <figure class="digimon__card digimon__card--gabumon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/gabumon.png" alt="Sprite pixelado do Gabumon"></div>
+          <figcaption class="digimon__caption">Gabumon</figcaption>
+        </figure>
+ 
+        <figure class="digimon__card digimon__card--shoutmon-x3">
+          <div class="digimon__media"><img class="digimon__img" src="./images/shoutmonx3.png" alt="Sprite pixelado do Shoutmon x3"></div>
+          <figcaption class="digimon__caption">Shoutmon x3</figcaption>
+        </figure>
+        <figure class="digimon__card digimon__card--garudamon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/garudamon.png" alt="Sprite pixelado do Garudamon"></div>
+          <figcaption class="digimon__caption">Garudamon</figcaption>
+        </figure>
+        <figure class="digimon__card digimon__card--wargreymon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/wargreymon.png" alt="Sprite pixelado do Wargreymon"></div>
+          <figcaption class="digimon__caption">Wargreymon</figcaption>
+        </figure>
+        <figure class="digimon__card digimon__card--garurumon">
+          <div class="digimon__media"><img class="digimon__img" src="./images/garurumon.png" alt="Sprite pixelado do Garurumon"></div>
+          <figcaption class="digimon__caption">garurumon</figcaption>
+        </figure>
+ 
+        <div class="digimon__arrow digimon__arrow--shoutmon" aria-hidden="true">
+          <div class="digimon__arrow-rotator"><div class="digimon__arrow-box"><img class="digimon__arrow-img" src="./assets/seta.png" alt=""></div></div>
+        </div>
+        <div class="digimon__arrow digimon__arrow--birdramon" aria-hidden="true">
+          <div class="digimon__arrow-rotator"><div class="digimon__arrow-box"><img class="digimon__arrow-img" src="./assets/seta.png" alt=""></div></div>
+        </div>
+        <div class="digimon__arrow digimon__arrow--greymon" aria-hidden="true">
+          <div class="digimon__arrow-rotator"><div class="digimon__arrow-box"><img class="digimon__arrow-img" src="./assets/seta.png" alt=""></div></div>
+        </div>
+        <div class="digimon__arrow digimon__arrow--gabumon" aria-hidden="true">
+          <div class="digimon__arrow-rotator"><div class="digimon__arrow-box"><img class="digimon__arrow-img" src="./assets/seta.png" alt=""></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+ 
+  <footer class="cta">
+    <p class="section-label section-label--sans cta__label">
+      <span class="section-label__number">05</span>
+      <span class="section-label__divider" aria-hidden="true"></span>
+      <span class="section-label__title">Seu próximo capítulo</span>
+    </p>
+ 
+    <div class="cta__invite">
+      <div class="cta__message">
+        <h2 class="cta__title">
+          <span>Vamos dar clareza</span>
+          <span>ao que <span class="cta__title-accent">vem depois?</span></span>
+        </h2>
+        <p class="cta__text">Para começar sua jornada existem vários jogos e em diversas plataformas</p>
+        <div class="cta__action" aria-hidden="true"></div>
+      </div>
+    </div>
+ 
+    <div class="cta__cover">
+      <img class="cta__cover-img" src="./images/jogos.png" alt="Coleção de capas de jogos da franquia Digimon">
+    </div>
+  </footer>
+ 
+</div>
+ 
+<script>
+  (function () {
+    var toggle = document.querySelector('.nav__toggle');
+    var menu = document.getElementById('nav-menu');
+    var desktop = window.matchMedia('(min-width: 1025px)');
+    var video = document.querySelector('.evolution__video-player');
+    var videoScreen = document.querySelector('.evolution__video-screen');
+    var videoPlay = document.querySelector('.evolution__video-play');
+    var videoError = document.querySelector('.evolution__video-error');
+ 
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      menu.classList.toggle('is-open', open);
+    }
+ 
+    toggle.addEventListener('click', function () {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+ 
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+ 
+    menu.addEventListener('click', function (event) {
+      if (event.target.closest('a')) setOpen(false);
+    });
+ 
+    desktop.addEventListener('change', function (event) {
+      if (event.matches) setOpen(false);
+    });
+
+    videoPlay.addEventListener('click', function () {
+      video.play().catch(function () {
+        videoError.hidden = false;
+      });
+    });
+
+    video.addEventListener('playing', function () {
+      videoScreen.classList.add('is-playing');
+      videoError.hidden = true;
+    });
+
+    video.addEventListener('error', function () {
+      videoError.hidden = false;
+    });
+  })();
+</script>
+</body>
+</html>
